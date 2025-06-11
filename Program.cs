@@ -9,7 +9,6 @@ namespace SemanticNetworksSample
     {
         static void Main(string[] args)
         {
-            // Создаем концепты
             Concept animalConcept = new CBuilder(typeof(Animal))
                                         .SetName("Animal")
                                         .SetFilter(obj => true)
@@ -35,14 +34,14 @@ namespace SemanticNetworksSample
                                         .SetFilter(obj => true)
                                         .Build();
 
-            // Иерархия
+
             mammalConcept.AddParent(animalConcept);
             birdConcept.AddParent(animalConcept);
             humanConcept.AddParent(mammalConcept);
             greekConcept.AddParent(humanConcept);
             pigConcept.AddParent(mammalConcept);
 
-            // Словарь типов → концептов
+        
             var conceptMapping = new Dictionary<Type, Concept>
             {
                 { typeof(Animal), animalConcept },
@@ -53,20 +52,20 @@ namespace SemanticNetworksSample
                 { typeof(Pig), pigConcept },
             };
 
-            // Создаем экземпляры
+        
             var aristotle = new Greek();
             var ivan = new Human();
             var khryusha = new Pig();
             var gosha = new Bird();
 
-            // Проверки
+            
             Console.WriteLine($"Аристотель - грек? {ConceptHelper.IsInstanceOf(aristotle, greekConcept, conceptMapping)}");
             Console.WriteLine($"Аристотель - млекопитающее? {ConceptHelper.IsInstanceOf(aristotle, mammalConcept, conceptMapping)}");
             Console.WriteLine($"Иван - грек? {ConceptHelper.IsInstanceOf(ivan, greekConcept, conceptMapping)}");
             Console.WriteLine($"Хрюша - птица? {ConceptHelper.IsInstanceOf(khryusha, birdConcept, conceptMapping)}");
             Console.WriteLine($"Птица является животным? {ConceptHelper.IsInstanceOf(gosha, animalConcept, conceptMapping)}");
 
-            // Регистрация связей
+        
             EatingRelationsManager.AddRelation(humanConcept, pigConcept);
             EatingRelationsManager.AddRelation(humanConcept, birdConcept);
 
